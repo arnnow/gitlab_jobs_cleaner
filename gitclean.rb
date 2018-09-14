@@ -36,11 +36,11 @@ projects = Gitlab.projects(per_page: GITLABPROJECTSPAGES)
 projects.auto_paginate do |project|
   $log.info "Project : " + project.name_with_namespace
   $page = 0
-  while $page < 100 do
+  while $page < GITLABJOBSPAGES do
     jobs = Gitlab.jobs(project.id,{ per_page: GITLABJOBSPAGES , page: $page})
     $page += 1
     if !jobs.any?
-      $page = 101 
+      $page = GITLABJOBSPAGES + 1
     end
     jobs.each do |job|
       if Time.parse(job.created_at) < Time.now - OLDER_THAN
